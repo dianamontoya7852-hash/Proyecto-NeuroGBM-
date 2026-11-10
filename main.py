@@ -1,258 +1,171 @@
 """
 Proyecto: NeuroGBM
-Descripción:
-Sistema básico para organizar el seguimiento de pacientes con glioblastoma.
-Permite registrar pacientes, síntomas, tratamientos y consultas médicas.
-El proyecto aplica programación orientada a objetos mediante clases,
-encapsulamiento, herencia, super() y polimorfismo.
+Archivo: main.py
+
+Archivo principal de ejecución.
+Importa las clases desde modelos.py y realiza
+las pruebas de funcionamiento del sistema.
 """
 
+# ==========================================
+# IMPORTACIÓN DE CLASES
+# ==========================================
 
-# Creación de la clase base
-class Usuario:
-    def __init__(self, id_usuario, nombre, correo, contrasena, rol):
-        self.id_usuario = id_usuario
-        self.nombre = nombre
-        self.correo = correo
-        self.__contrasena = contrasena
-        self.rol = rol
-
-    # Aplicación de encapsulamiento
-    def verificar_contrasena(self, contrasena):
-        return self.__contrasena == contrasena
-
-    def iniciar_sesion(self):
-        print(f"{self.nombre} ha iniciado sesión.")
-
-    def cerrar_sesion(self):
-        print(f"{self.nombre} ha cerrado sesión.")
-
-    def editar_perfil(self, nuevo_correo):
-        self.correo = nuevo_correo
-        print("Perfil actualizado correctamente.")
+from modelos import (
+    Usuario,
+    Paciente,
+    Medico,
+    Administrador,
+    Sintoma,
+    Tratamiento,
+    Cita
+)
 
 
-# Creación de la clase Paciente
-class Paciente(Usuario):
-    def __init__(
-        self, id_usuario, nombre, correo, contrasena,
-        rol, edad, diagnostico
-    ):
-        # Uso de super() y herencia
-        super().__init__(
-            id_usuario, nombre, correo, contrasena, rol
-        )
-        self.edad = edad
-        self.diagnostico = diagnostico
-        self.__sintomas = []
-        self.__tratamientos = []
+# ==========================================
+# INSTANCIACIÓN DE OBJETOS
+# ==========================================
 
-    def registrar_sintoma(self, sintoma):
-        self.__sintomas.append(sintoma)
-        print("Síntoma registrado correctamente.")
+print("======================================")
+print("       SISTEMA NEUROGBM")
+print("======================================")
 
-    def consultar_sintomas(self):
-        return self.__sintomas.copy()
+# Creación de paciente
+paciente = Paciente(
+    1,
+    "Ana López",
+    "ana@example.com",
+    "clave123",
+    "Paciente",
+    45,
+    "Glioblastoma"
+)
 
-    def recibir_tratamiento(self, tratamiento):
-        self.__tratamientos.append(tratamiento)
-        print("Tratamiento registrado correctamente.")
+# Creación de médico
+medico = Medico(
+    2,
+    "Dr. Carlos Ruiz",
+    "carlos@example.com",
+    "medico123",
+    "Médico",
+    "Neurooncología",
+    "Hospital General",
+    "5551234567"
+)
 
-    def consultar_tratamientos(self):
-        return self.__tratamientos.copy()
-
-    # Sobrescritura de métodos (polimorfismo)
-    def mostrar_informacion(self):
-        print(f"Paciente: {self.nombre}")
-        print(f"Edad: {self.edad}")
-        print(f"Diagnóstico: {self.diagnostico}")
-
-
-# Creación de la clase Sintoma
-class Sintoma:
-    def __init__(
-        self, id_sintoma, tipo, descripcion,
-        intensidad, fecha_registro
-    ):
-        self.id_sintoma = id_sintoma
-        self.tipo = tipo
-        self.descripcion = descripcion
-        self.intensidad = intensidad
-        self.fecha_registro = fecha_registro
-
-    def registrar_sintoma(self):
-        print(f"Registrando síntoma: {self.tipo}")
-
-    def editar_sintoma(self, nueva_descripcion):
-        self.descripcion = nueva_descripcion
-        print("Descripción del síntoma actualizada.")
-
-    def eliminar_sintoma(self):
-        print(f"Solicitud de eliminación del síntoma {self.id_sintoma}.")
+# Creación de administrador
+administrador = Administrador(
+    3,
+    "Laura Gómez",
+    "laura@example.com",
+    "admin123",
+    "Administrador"
+)
 
 
-# Creación de la clase Tratamiento
-class Tratamiento:
-    def __init__(
-        self, id_tratamiento, tipo, nombre, dosis,
-        frecuencia, fecha_inicio, fecha_fin, observaciones=""
-    ):
-        self.id_tratamiento = id_tratamiento
-        self.tipo = tipo
-        self.nombre = nombre
-        self.dosis = dosis
-        self.frecuencia = frecuencia
-        self.fecha_inicio = fecha_inicio
-        self.fecha_fin = fecha_fin
-        self.observaciones = observaciones
+# ==========================================
+# PRUEBA DE COMPOSICIÓN
+# ==========================================
 
-    def registrar_tratamiento(self):
-        print(f"Tratamiento registrado: {self.nombre}")
+print("\n--- PRUEBA DE COMPOSICIÓN ---")
 
-    def editar_tratamiento(self, nueva_dosis):
-        self.dosis = nueva_dosis
-        print("Dosis actualizada.")
+sintoma = Sintoma(
+    1,
+    "Dolor de cabeza",
+    "Dolor persistente",
+    7,
+    "2026-11-09"
+)
 
-    def finalizar_tratamiento(self):
-        print(f"Tratamiento finalizado: {self.nombre}")
+tratamiento = Tratamiento(
+    1,
+    "Farmacológico",
+    "Tratamiento de ejemplo",
+    "Según indicación médica",
+    "Según prescripción",
+    "2026-11-09",
+    "Por determinar"
+)
 
+# El paciente contiene objetos Sintoma y Tratamiento
+paciente.registrar_sintoma(sintoma)
+paciente.recibir_tratamiento(tratamiento)
 
-# Creación de la clase Medico
-class Medico(Usuario):
-    def __init__(
-        self, id_usuario, nombre, correo, contrasena,
-        rol, especialidad, institucion, telefono
-    ):
-        # Uso de super() y herencia
-        super().__init__(
-            id_usuario, nombre, correo, contrasena, rol
-        )
-        self.especialidad = especialidad
-        self.institucion = institucion
-        self.telefono = telefono
+# Consulta de objetos contenidos
+print("\nSíntomas del paciente:")
 
-    def consultar_paciente(self, paciente):
-        print(f"Consultando expediente de {paciente.nombre}.")
-
-    def registrar_cita(self, cita):
-        print(f"Cita registrada para {cita.paciente.nombre}.")
-
-    def actualizar_tratamiento(self, tratamiento, nueva_dosis):
-        tratamiento.editar_tratamiento(nueva_dosis)
-
-    def revisar_estudios(self):
-        print("Revisando estudios médicos.")
-
-
-# Creación de la clase Cita
-class Cita:
-    def __init__(self, id_cita, fecha, motivo, paciente, medico):
-        self.id_cita = id_cita
-        self.fecha = fecha
-        self.motivo = motivo
-        self.paciente = paciente
-        self.medico = medico
-
-    def mostrar_detalles(self):
-        print(f"Cita: {self.fecha}")
-        print(f"Motivo: {self.motivo}")
-        print(f"Paciente: {self.paciente.nombre}")
-        print(f"Médico: {self.medico.nombre}")
-
-
-# Sobrescritura de métodos (polimorfismo)
-class Administrador(Usuario):
-    def __init__(
-        self, id_usuario, nombre, correo, contrasena, rol
-    ):
-        super().__init__(
-            id_usuario, nombre, correo, contrasena, rol
-        )
-
-    def mostrar_informacion(self):
-        print(f"Administrador del sistema: {self.nombre}")
-
-
-# Función para demostrar el polimorfismo
-def mostrar_usuario(usuario):
-    if isinstance(usuario, Paciente):
-        usuario.mostrar_informacion()
-    elif isinstance(usuario, Administrador):
-        usuario.mostrar_informacion()
-    else:
-        print(f"Usuario del sistema: {usuario.nombre}")
-
-
-# Instanciación y pruebas
-if __name__ == "__main__":
-    paciente = Paciente(
-        1,
-        "Ana López",
-        "ana@example.com",
-        "clave123",
-        "Paciente",
-        45,
-        "Glioblastoma"
-    )
-
-    medico = Medico(
-        2,
-        "Dr. Carlos Ruiz",
-        "carlos@example.com",
-        "medico123",
-        "Médico",
-        "Neurooncología",
-        "Hospital General",
-        "5551234567"
-    )
-
-    administrador = Administrador(
-        3,
-        "Laura Gómez",
-        "laura@example.com",
-        "admin123",
-        "Administrador"
-    )
-
-    sintoma = Sintoma(
-        1,
-        "Dolor de cabeza",
-        "Dolor persistente",
-        7,
-        "2026-10-15"
-    )
-
-    tratamiento = Tratamiento(
-        1,
-        "Farmacológico",
-        "Tratamiento de ejemplo",
-        "Según indicación médica",
-        "Según prescripción",
-        "2026-10-15",
-        "Por determinar"
-    )
-
-    cita = Cita(
-        1,
-        "2026-10-20",
-        "Seguimiento",
-        paciente,
-        medico
-    )
-
-    paciente.registrar_sintoma(sintoma)
-    paciente.recibir_tratamiento(tratamiento)
-    medico.consultar_paciente(paciente)
-    medico.registrar_cita(cita)
-    cita.mostrar_detalles()
-
-    print("\n--- Prueba de encapsulamiento ---")
+for sintoma_registrado in paciente.consultar_sintomas():
     print(
-        "Contraseña correcta:",
-        paciente.verificar_contrasena("clave123")
+        f"- {sintoma_registrado.tipo}: "
+        f"Intensidad {sintoma_registrado.intensidad}/10"
     )
 
-    print("\n--- Prueba de polimorfismo ---")
-    mostrar_usuario(paciente)
-    mostrar_usuario(administrador)
-    mostrar_usuario(medico)
+print("\nTratamientos del paciente:")
+
+for tratamiento_registrado in paciente.consultar_tratamientos():
+    print(f"- {tratamiento_registrado.nombre}")
+
+
+# ==========================================
+# PRUEBA DE HERENCIA
+# ==========================================
+
+print("\n--- PRUEBA DE HERENCIA ---")
+
+paciente.iniciar_sesion()
+medico.iniciar_sesion()
+administrador.iniciar_sesion()
+
+
+# ==========================================
+# PRUEBA DE ENCAPSULAMIENTO
+# ==========================================
+
+print("\n--- PRUEBA DE ENCAPSULAMIENTO ---")
+
+print(
+    "Contraseña correcta:",
+    paciente.verificar_contrasena("clave123")
+)
+
+print(
+    "Contraseña incorrecta:",
+    paciente.verificar_contrasena("incorrecta")
+)
+
+
+# ==========================================
+# PRUEBA DE POLIMORFISMO
+# ==========================================
+
+print("\n--- PRUEBA DE POLIMORFISMO ---")
+
+usuarios = [paciente, medico, administrador]
+
+for usuario in usuarios:
+    usuario.mostrar_informacion()
+    print("------------------------------")
+
+
+# ==========================================
+# PRUEBA DE INTERACCIÓN ENTRE CLASES
+# ==========================================
+
+print("\n--- PRUEBA DE INTERACCIÓN ---")
+
+cita = Cita(
+    1,
+    "2026-11-15",
+    "Seguimiento oncológico",
+    paciente,
+    medico
+)
+
+medico.consultar_paciente(paciente)
+medico.registrar_cita(cita)
+cita.mostrar_detalles()
+
+
+print("\n======================================")
+print("  PRUEBAS DEL SISTEMA NEUROGBM FINALIZADAS")
+print("======================================")
