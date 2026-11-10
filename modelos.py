@@ -2,14 +2,9 @@
 Proyecto: NeuroGBM
 Archivo: modelos.py
 
-Contiene las clases del sistema de seguimiento
-de pacientes con glioblastoma.
-
-Se implementan:
-- Herencia
-- Encapsulamiento
-- Polimorfismo
-- Composición
+Sistema de seguimiento de pacientes con glioblastoma.
+Implementa herencia, encapsulamiento, polimorfismo,
+composición y modularización.
 """
 
 
@@ -25,7 +20,6 @@ class Usuario:
         self.__contrasena = contrasena
         self.rol = rol
 
-    # Encapsulamiento
     def verificar_contrasena(self, contrasena):
         return self.__contrasena == contrasena
 
@@ -39,6 +33,7 @@ class Usuario:
         self.correo = nuevo_correo
         print("Perfil actualizado correctamente.")
 
+    # Método base para demostrar polimorfismo
     def mostrar_informacion(self):
         print(f"Usuario: {self.nombre}")
         print(f"Rol: {self.rol}")
@@ -60,35 +55,28 @@ class Paciente(Usuario):
         self.edad = edad
         self.diagnostico = diagnostico
 
-        # Encapsulamiento y composición
+        # Composición: el paciente contiene síntomas
+        # y tratamientos.
         self.__sintomas = []
         self.__tratamientos = []
 
     def registrar_sintoma(self, sintoma):
-        # Delegación: utiliza un método del objeto Sintoma
         sintoma.registrar_sintoma()
-
-        # El paciente almacena el objeto Sintoma
         self.__sintomas.append(sintoma)
-
         print("Síntoma registrado correctamente.")
 
     def consultar_sintomas(self):
         return self.__sintomas.copy()
 
     def recibir_tratamiento(self, tratamiento):
-        # Delegación: utiliza un método del objeto Tratamiento
         tratamiento.registrar_tratamiento()
-
-        # El paciente almacena el objeto Tratamiento
         self.__tratamientos.append(tratamiento)
-
         print("Tratamiento registrado correctamente.")
 
     def consultar_tratamientos(self):
         return self.__tratamientos.copy()
 
-    # Polimorfismo: sobrescritura de método
+    # Polimorfismo
     def mostrar_informacion(self):
         print(f"Paciente: {self.nombre}")
         print(f"Edad: {self.edad}")
@@ -179,6 +167,7 @@ class Medico(Usuario):
     def revisar_estudios(self):
         print("Revisando estudios médicos.")
 
+    # Polimorfismo
     def mostrar_informacion(self):
         print(f"Médico: {self.nombre}")
         print(f"Especialidad: {self.especialidad}")
@@ -216,6 +205,6 @@ class Administrador(Usuario):
             id_usuario, nombre, correo, contrasena, rol
         )
 
-    # Polimorfismo: sobrescritura de método
+    # Polimorfismo
     def mostrar_informacion(self):
         print(f"Administrador del sistema: {self.nombre}")
