@@ -39,6 +39,10 @@ class Usuario:
         self.correo = nuevo_correo
         print("Perfil actualizado correctamente.")
 
+    def mostrar_informacion(self):
+        print(f"Usuario: {self.nombre}")
+        print(f"Rol: {self.rol}")
+
 
 # ==========================================
 # CLASE PACIENTE: HERENCIA Y COMPOSICIÓN
@@ -174,6 +178,11 @@ class Medico(Usuario):
 
     def revisar_estudios(self):
         print("Revisando estudios médicos.")
+
+    def mostrar_informacion(self):
+        print(f"Médico: {self.nombre}")
+        print(f"Especialidad: {self.especialidad}")
+        print(f"Institución: {self.institucion}")
 
 
 # ==========================================
